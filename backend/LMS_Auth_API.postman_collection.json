@@ -1,0 +1,130 @@
+{
+  "info": {
+    "_postman_id": "lms-auth-api-001",
+    "name": "LMS Authentication API",
+    "description": "Complete authentication testing for LMS platform",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Register User",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/auth/register",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["auth", "register"]
+        },
+        "description": "Register a new user. Returns access token and sets refresh token cookie."
+      },
+      "response": []
+    },
+    {
+      "name": "2. Login User",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/auth/login",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["auth", "login"]
+        },
+        "description": "Login with existing user. Returns access token and sets refresh token cookie."
+      },
+      "response": []
+    },
+    {
+      "name": "3. Refresh Access Token",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/auth/refresh",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["auth", "refresh"]
+        },
+        "description": "Get new access token using refresh token cookie. Must have valid refresh token from login/register."
+      },
+      "response": []
+    },
+    {
+      "name": "4. Get Current User",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer YOUR_ACCESS_TOKEN_HERE",
+            "description": "Replace with actual access token from login/register"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:5000/users/me",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["users", "me"]
+        },
+        "description": "Get current user info. Requires valid access token in Authorization header."
+      },
+      "response": []
+    },
+    {
+      "name": "5. Logout User",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/auth/logout",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["auth", "logout"]
+        },
+        "description": "Logout user. Deletes refresh token from database and clears cookie."
+      },
+      "response": []
+    },
+    {
+      "name": "6. Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/health",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["health"]
+        },
+        "description": "Check if server is running."
+      },
+      "response": []
+    }
+  ]
+}

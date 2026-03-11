@@ -1,0 +1,63 @@
+-- Users table
+CREATE TABLE IF NOT EXISTS users (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Refresh tokens table
+CREATE TABLE IF NOT EXISTS refresh_tokens (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  user_id INT NOT NULL,
+  token VARCHAR(500) NOT NULL,
+  expires_at TIMESTAMP NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- Subjects table
+CREATE TABLE IF NOT EXISTS subjects (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  title VARCHAR(255) NOT NULL,
+  description TEXT,
+  display_order INT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Sections table
+CREATE TABLE IF NOT EXISTS sections (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  subject_id INT NOT NULL,
+  title VARCHAR(255) NOT NULL,
+  display_order INT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE CASCADE
+);
+
+-- Videos table
+CREATE TABLE IF NOT EXISTS videos (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  section_id INT NOT NULL,
+  title VARCHAR(255) NOT NULL,
+  youtube_id VARCHAR(50) NOT NULL,
+  duration INT NOT NULL,
+  concept TEXT,
+  display_order INT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (section_id) REFERENCES sections(id) ON DELETE CASCADE
+);
+
+-- Video progress table
+CREATE TABLE IF NOT EXISTS video_progress (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  user_id INT NOT NULL,
+  video_id INT NOT NULL,
+  watched_duration INT DEFAULT 0,
+  completed BOOLEAN DEFAULT FALSE,
+  last_watched TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (video_id) REFERENCES videos(id) ON DELETE CASCADE,
+  UNIQUE KEY unique_user_video (user_id, video_id)
+);
