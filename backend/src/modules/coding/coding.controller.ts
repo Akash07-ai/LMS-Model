@@ -1,7 +1,108 @@
 import { Request, Response } from 'express';
 import { pool } from '../../config/db';
 import { RowDataPacket, ResultSetHeader } from 'mysql2';
+import { execFile, exec } from 'child_process';
+import * as fs from 'fs';
+import * as path from 'path';
+import * as os from 'os';
 
+// ── helpers ──────────────────────────────────────────────────────────────────
+
+function runProcess(cmd: string, args: string[], timeout = 5000): Promise<{ stdout: string; stderr: string }> {
+  return new Promise((resolve, reject) => {
+    execFile(cmd, args, { timeout, maxBuffer: 1024 * 512 }, (err, stdout, stderr) => {
+      if (err && err.killed) return reject(new Error('Time Limit Exceeded (5s)'));
+      resolve({ stdout: stdout || '', stderr: stderr || '' });
+    });
+  });
+}
+
+async function executeInSandbox(
+  code: string,
+  language: string,
+  input: string
+): Promise<{ output: string; executionTime: number; error: boolean }> {
+  const tmpDir = os.tmpdir();
+  const startTime = Date.now();
+
+  // ── JavaScript ──────────────────────────────────────────────────────────────
+  if (language === 'javascript') {
+    const logs: string[] = [];
+    const sandboxConsole = {
+      log:  (...a: any[]) => logs.push(a.map((x: any) => typeof x === 'object' ? JSON.stringify(x) : String(x)).join(' ')),
+      error:(...a: any[]) => logs.push('ERROR: ' + a.join(' ')),
+      warn: (...a: any[]) => logs.push('WARN: '  + a.join(' ')),
+    };
+    try {
+      const fn = new Function('sandboxConsole', `'use strict'; const console = sandboxConsole;\n${code}`);
+      await Promise.race([
+        new Promise<void>((res, rej) => { try { fn(sandboxConsole); res(); } catch(e){ rej(e); } }),
+        new Promise<void>((_, rej) => setTimeout(() => rej(new Error('Time Limit Exceeded (5s)')), 5000))
+      ]);
+      return {
+        output: logs.length ? logs.join('\n') : '(no output — use console.log to print)',
+        executionTime: Date.now() - startTime,
+        error: false
+      };
+    } catch (e: any) {
+      return { output: e.message, executionTime: Date.now() - startTime, error: true };
+    }
+  }
+
+  // ── Python ──────────────────────────────────────────────────────────────────
+  if (language === 'python') {
+    const tmpFile = path.join(tmpDir, `lms_${Date.now()}.py`);
+    try {
+      fs.writeFileSync(tmpFile, code, 'utf8');
+      const { stdout, stderr } = await runProcess('python', [tmpFile]);
+      fs.unlinkSync(tmpFile);
+      const output = stdout || stderr || '(no output — use print() to show results)';
+      return { output: output.trimEnd(), executionTime: Date.now() - startTime, error: !!stderr && !stdout };
+    } catch (e: any) {
+      try { fs.unlinkSync(tmpFile); } catch {}
+      return { output: e.message, executionTime: Date.now() - startTime, error: true };
+    }
+  }
+
+  // ── Java ────────────────────────────────────────────────────────────────────
+  if (language === 'java') {
+    // Extract public class name, default to Main
+    const classMatch = code.match(/public\s+class\s+(\w+)/);
+    const className = classMatch ? classMatch[1] : 'Main';
+
+    // If no class found, wrap code in a Main class automatically
+    const finalCode = classMatch ? code : `public class Main {\n  public static void main(String[] args) {\n${code}\n  }\n}`;
+    const finalClass = classMatch ? className : 'Main';
+
+    const tmpFile = path.join(tmpDir, `${finalClass}.java`);
+    try {
+      fs.writeFileSync(tmpFile, finalCode, 'utf8');
+
+      // Compile
+      const { stderr: compileErr } = await runProcess('javac', [tmpFile], 10000);
+      if (compileErr) {
+        try { fs.unlinkSync(tmpFile); } catch {}
+        return { output: `Compilation Error:\n${compileErr.trimEnd()}`, executionTime: Date.now() - startTime, error: true };
+      }
+
+      // Run
+      const { stdout, stderr: runErr } = await runProcess('java', ['-cp', tmpDir, finalClass], 5000);
+      // Cleanup .java and .class
+      try { fs.unlinkSync(tmpFile); } catch {}
+      try { fs.unlinkSync(path.join(tmpDir, `${finalClass}.class`)); } catch {}
+
+      const output = stdout || runErr || '(no output — use System.out.println() to print)';
+      return { output: output.trimEnd(), executionTime: Date.now() - startTime, error: !!runErr && !stdout };
+    } catch (e: any) {
+      try { fs.unlinkSync(tmpFile); } catch {}
+      return { output: e.message, executionTime: Date.now() - startTime, error: true };
+    }
+  }
+
+  return { output: `Language "${language}" is not supported.`, executionTime: 0, error: true };
+}
+
+// ── controllers ──────────────────────────────────────────────────────────────
 export const getProblemsBySubject = async (req: Request, res: Response) => {
   try {
     const { subjectId } = req.params;
@@ -43,6 +144,18 @@ export const getProblemById = async (req: Request, res: Response) => {
     res.json(problem);
   } catch (error) {
     console.error('Get problem error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+export const runCode = async (req: Request, res: Response) => {
+  try {
+    const { code, language, input } = req.body;
+    if (!code || !language) return res.status(400).json({ message: 'Missing code or language' });
+    const result = await executeInSandbox(code, language, input || '');
+    res.json(result);
+  } catch (error) {
+    console.error('Run code error:', error);
     res.status(500).json({ message: 'Server error' });
   }
 };

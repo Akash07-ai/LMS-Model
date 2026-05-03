@@ -34,6 +34,7 @@ export default function PracticePage() {
   const [totalTests, setTotalTests] = useState<number>();
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [executionTime, setExecutionTime] = useState<number | null>(null);
 
   useEffect(() => {
     if (!user) {
@@ -71,27 +72,46 @@ export default function PracticePage() {
     setLanguage(lang);
   };
 
-  const handleRun = () => {
-    setOutput('Running code...\n\n' + code);
+  const handleRun = async () => {
+    setSubmitting(true);
+    setStatus('');
+    setOutput('⏳ Running code...');
+    setExecutionTime(null);
+    try {
+      const { data } = await apiClient.post('/coding/run', {
+        code,
+        language,
+        input: problem?.example_input || ''
+      });
+      setOutput(data.output);
+      setExecutionTime(data.executionTime);
+      setStatus(data.error ? 'error' : 'success');
+    } catch (error: any) {
+      setOutput('❌ Error: ' + (error.response?.data?.message || error.message));
+      setStatus('error');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleSubmit = async () => {
     setSubmitting(true);
-    setOutput('Submitting...');
-    
+    setOutput('⏳ Submitting...');
+    setExecutionTime(null);
     try {
       const { data } = await apiClient.post('/coding/submit', {
         problem_id: params.problemId,
         code,
         language
       });
-
       setStatus(data.status);
       setPassedTests(data.passed_tests);
       setTotalTests(data.total_tests);
+      setExecutionTime(data.execution_time);
       setOutput(`Status: ${data.status}\nPassed: ${data.passed_tests}/${data.total_tests}\nExecution Time: ${data.execution_time}ms`);
     } catch (error: any) {
       setOutput('Error: ' + (error.response?.data?.message || error.message));
+      setStatus('error');
     } finally {
       setSubmitting(false);
     }
@@ -105,6 +125,9 @@ export default function PracticePage() {
     }
     setOutput('');
     setStatus('');
+    setExecutionTime(null);
+    setPassedTests(undefined);
+    setTotalTests(undefined);
   };
 
   if (!user || loading) return <div className="p-8">Loading...</div>;
@@ -181,15 +204,16 @@ export default function PracticePage() {
           
           <button
             onClick={handleRun}
-            className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+            disabled={submitting}
+            className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
           >
-            Run
+            {submitting ? '⏳ Running...' : '▶ Run'}
           </button>
           
           <button
             onClick={handleSubmit}
             disabled={submitting}
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-gray-400"
+            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
           >
             {submitting ? 'Submitting...' : 'Submit'}
           </button>
@@ -223,6 +247,7 @@ export default function PracticePage() {
               status={status}
               passedTests={passedTests}
               totalTests={totalTests}
+              executionTime={executionTime ?? undefined}
             />
           </div>
         </div>

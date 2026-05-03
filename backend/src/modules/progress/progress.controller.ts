@@ -119,6 +119,74 @@ export const getProgress = async (req: Request, res: Response) => {
   }
 };
 
+export const completeVideo = async (req: Request, res: Response) => {
+  try {
+    const { videoId } = req.params;
+    const userId = req.userId!;
+
+    const [videos] = await pool.query<RowDataPacket[]>(
+      'SELECT duration FROM videos WHERE id = ?',
+      [Number(videoId)]
+    );
+    if (videos.length === 0) return res.status(404).json({ message: 'Video not found' });
+
+    const [existing] = await pool.query<RowDataPacket[]>(
+      'SELECT id, watched_duration FROM video_progress WHERE user_id = ? AND video_id = ?',
+      [Number(userId), Number(videoId)]
+    );
+
+    if (existing.length > 0) {
+      await pool.query(
+        `UPDATE video_progress SET completed = 1, watched_duration = ?, last_watched = NOW() WHERE user_id = ? AND video_id = ?`,
+        [videos[0].duration, Number(userId), Number(videoId)]
+      );
+    } else {
+      await pool.query(
+        `INSERT INTO video_progress (user_id, video_id, watched_duration, completed) VALUES (?, ?, ?, 1)`,
+        [Number(userId), Number(videoId), videos[0].duration]
+      );
+    }
+
+    res.json({ message: 'Video marked as complete', completed: true });
+  } catch (error) {
+    console.error('[PROGRESS] Complete video error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+export const getCourseProgress = async (req: Request, res: Response) => {
+  try {
+    const { userId, courseId } = req.params;
+    const requestingUserId = req.userId!;
+
+    // Only allow users to fetch their own progress
+    if (Number(userId) !== Number(requestingUserId)) {
+      return res.status(403).json({ message: 'Forbidden' });
+    }
+
+    const [progress] = await pool.query<RowDataPacket[]>(
+      `SELECT
+        v.id as lesson_id,
+        v.title,
+        v.duration,
+        COALESCE(vp.watched_duration, 0) as watch_time,
+        COALESCE(vp.completed, 0) as completed,
+        vp.last_watched
+      FROM videos v
+      JOIN sections sec ON v.section_id = sec.id
+      LEFT JOIN video_progress vp ON v.id = vp.video_id AND vp.user_id = ?
+      WHERE sec.subject_id = ?
+      ORDER BY sec.display_order, v.display_order`,
+      [Number(userId), Number(courseId)]
+    );
+
+    res.json({ progress });
+  } catch (error) {
+    console.error('[PROGRESS] Get course progress error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
 export const getUserProgress = async (req: Request, res: Response) => {
   try {
     const userId = req.userId!;

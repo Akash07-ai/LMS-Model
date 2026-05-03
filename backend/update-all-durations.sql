@@ -21,7 +21,7 @@ UPDATE videos SET duration = 2880 WHERE youtube_id = '0ZJgIjIuY7U'; -- useEffect
 UPDATE videos SET duration = 3120 WHERE youtube_id = 'HYKDUF8X3qI'; -- Context API 52:00
 UPDATE videos SET duration = 2700 WHERE youtube_id = 'J-g9ZJha8FE'; -- Custom Hooks 45:00
 UPDATE videos SET duration = 3300 WHERE youtube_id = 'uojLJFt9SzY'; -- Performance 55:00
-UPDATE videos SET duration = 3000 WHERE youtube_id = 'Law7wfdg_ls'; -- React Router 50:00
+UPDATE videos SET duration = 3000 WHERE youtube_id = 'Ul3y1LXxzdU'; -- React Router 50:00
 
 -- Node.js Backend (Subject 3)
 UPDATE videos SET duration = 2160 WHERE youtube_id = 'TlB_eWDSMt4'; -- Node.js Intro 36:00
@@ -47,7 +47,7 @@ UPDATE videos SET duration = 2880 WHERE youtube_id = 'PXMJ6FS7llk'; -- Automatio
 
 -- Machine Learning Basics (Subject 5)
 UPDATE videos SET duration = 2220 WHERE youtube_id = 'ukzFI9rgwfU'; -- ML Introduction 37:00
-UPDATE videos SET duration = 1980 WHERE youtube_id = 'PPLop4L2eGk'; -- ML Algorithms 33:00
+UPDATE videos SET duration = 1980 WHERE youtube_id = 'E0W1ZZYIV8o'; -- ML Algorithms 33:00
 UPDATE videos SET duration = 2460 WHERE youtube_id = 'Gv9_4yMHFhI'; -- Data Preprocessing 41:00
 UPDATE videos SET duration = 2580 WHERE youtube_id = 'nk2CQITm_eo'; -- Linear Regression 43:00
 UPDATE videos SET duration = 2820 WHERE youtube_id = 'vsWrXfO3wWw'; -- Classification 47:00
@@ -62,11 +62,11 @@ UPDATE videos SET duration = 2040 WHERE youtube_id = 'qz0aGYrrlhU'; -- HTML Basi
 UPDATE videos SET duration = 2400 WHERE youtube_id = 'yfoY53QXEnI'; -- CSS Fundamentals 40:00
 UPDATE videos SET duration = 1920 WHERE youtube_id = 'fNcJuPIZ2WE'; -- HTML Forms 32:00
 UPDATE videos SET duration = 2460 WHERE youtube_id = 'JJSoEo8JSnc'; -- Flexbox Layout 41:00
-UPDATE videos SET duration = 2760 WHERE youtube_id = 'EFafSYg-PkI'; -- CSS Grid 46:00
+UPDATE videos SET duration = 2760 WHERE youtube_id = 'jV8B24rSN5o'; -- CSS Grid 46:00
 UPDATE videos SET duration = 2940 WHERE youtube_id = 'yU7jJ3NbPdA'; -- Media Queries 49:00
 UPDATE videos SET duration = 2640 WHERE youtube_id = 'oZPR_78wCnY'; -- CSS Variables 44:00
 UPDATE videos SET duration = 3120 WHERE youtube_id = 'zHUpx90NerM'; -- CSS Animations 52:00
-UPDATE videos SET duration = 2880 WHERE youtube_id = 'Zz6eOVaaelI'; -- Sass/SCSS 48:00
+UPDATE videos SET duration = 2880 WHERE youtube_id = '_a5j7KoflTs'; -- Sass/SCSS 48:00
 
 -- Database Management (Subject 7)
 UPDATE videos SET duration = 2100 WHERE youtube_id = 'HXV3zeQKqGY'; -- SQL Introduction 35:00
@@ -82,13 +82,13 @@ UPDATE videos SET duration = 2880 WHERE youtube_id = 'fsG1XaZEa78'; -- Indexes 4
 -- Cloud Computing AWS (Subject 8)
 UPDATE videos SET duration = 2100 WHERE youtube_id = 'JIbIYCM48to'; -- AWS Introduction 35:00
 UPDATE videos SET duration = 1860 WHERE youtube_id = 'XhW17g73fvY'; -- AWS Account Setup 31:00
-UPDATE videos SET duration = 2340 WHERE youtube_id = 'ExjW7JZJPFE'; -- IAM Basics 39:00
+UPDATE videos SET duration = 2340 WHERE youtube_id = 'iS9ZjJ2Bnlg'; -- IAM Basics 39:00
 UPDATE videos SET duration = 2520 WHERE youtube_id = 'iHX-jtKIVNA'; -- EC2 Instances 42:00
 UPDATE videos SET duration = 2760 WHERE youtube_id = 'tfU0JEZjcsg'; -- S3 Storage 46:00
-UPDATE videos SET duration = 2940 WHERE youtube_id = 'hnJMbBA0yQE'; -- EBS Volumes 49:00
+UPDATE videos SET duration = 2940 WHERE youtube_id = 'S0NB3RRgFSs'; -- EBS Volumes 49:00
 UPDATE videos SET duration = 2640 WHERE youtube_id = 'fpxDGU2KdkA'; -- VPC Networking 44:00
 UPDATE videos SET duration = 3180 WHERE youtube_id = 'VIgAT7vjol8'; -- Load Balancers 53:00
-UPDATE videos SET duration = 2880 WHERE youtube_id = 'jOqr0eUJbPE'; -- Auto Scaling 48:00
+UPDATE videos SET duration = 2880 WHERE youtube_id = 'SZyOlBmFMoE'; -- Auto Scaling 48:00
 
 -- Mobile App Development (Subject 9)
 UPDATE videos SET duration = 2100 WHERE youtube_id = 'ur6I5m2nTvk'; -- React Native Intro 35:00
@@ -96,10 +96,10 @@ UPDATE videos SET duration = 1860 WHERE youtube_id = 'ANdSdIlgsEw'; -- Setup Env
 UPDATE videos SET duration = 2340 WHERE youtube_id = 'obH0Po_RdWk'; -- First App 39:00
 UPDATE videos SET duration = 2520 WHERE youtube_id = 'qSRrxpdMpVc'; -- Mobile Components 42:00
 UPDATE videos SET duration = 2760 WHERE youtube_id = 'nQVCkqvU1uE'; -- Navigation 46:00
-UPDATE videos SET duration = 2940 WHERE youtube_id = 'bXcJzDd6-bk'; -- Styling 49:00
+UPDATE videos SET duration = 2940 WHERE youtube_id = 'GrfOsWUiwrw'; -- Styling 49:00
 UPDATE videos SET duration = 2640 WHERE youtube_id = 'LE4Mgkrf7Sk'; -- App Store Deploy 44:00
 UPDATE videos SET duration = 3180 WHERE youtube_id = 'oBWBDaqNuws'; -- Play Store Deploy 53:00
-UPDATE videos SET duration = 2880 WHERE youtube_id = 'ajiLSPu_8WA'; -- App Testing 48:00
+UPDATE videos SET duration = 2880 WHERE youtube_id = 'CfdGIZkYwEU'; -- App Testing 48:00
 
 -- Cybersecurity Essentials (Subject 10)
 UPDATE videos SET duration = 2100 WHERE youtube_id = 'inWWhr5tnEA'; -- Security Basics 35:00
@@ -107,7 +107,7 @@ UPDATE videos SET duration = 1860 WHERE youtube_id = 'AQDCe585Lnc'; -- Encryptio
 UPDATE videos SET duration = 2340 WHERE youtube_id = 'GhrvZ5nW5sE'; -- Authentication 39:00
 UPDATE videos SET duration = 2520 WHERE youtube_id = 'dz7Ntp7KQGA'; -- Ethical Hacking 42:00
 UPDATE videos SET duration = 2760 WHERE youtube_id = '3Kq1MIfTWCE'; -- Penetration Testing 46:00
-UPDATE videos SET duration = 2940 WHERE youtube_id = 'qA0YcYgjOt4'; -- Vulnerability Scan 49:00
+UPDATE videos SET duration = 2940 WHERE youtube_id = 'lc7scxvKQOo'; -- Vulnerability Scan 49:00
 UPDATE videos SET duration = 2640 WHERE youtube_id = 'kBzbKUirOFk'; -- Network Security 44:00
 UPDATE videos SET duration = 3180 WHERE youtube_id = 'kDEX1HXybrU'; -- Firewall Config 53:00
 UPDATE videos SET duration = 2880 WHERE youtube_id = 'qPEA6J9pjG8'; -- Security Tools 48:00
@@ -142,8 +142,8 @@ UPDATE videos SET duration = 2520 WHERE youtube_id = 'FTFaQWZBqQ8'; -- Figma Bas
 UPDATE videos SET duration = 2760 WHERE youtube_id = 'lTIeZ2ahEkQ'; -- Prototyping 46:00
 UPDATE videos SET duration = 2940 WHERE youtube_id = 'Dtd40cHQQlk'; -- Design Systems 49:00
 UPDATE videos SET duration = 2640 WHERE youtube_id = 'Ovj4hFxko7c'; -- User Research 44:00
-UPDATE videos SET duration = 3180 WHERE youtube_id = 'BrVnBdW_W5k'; -- Usability Testing 53:00
-UPDATE videos SET duration = 2880 WHERE youtube_id = 'Ty289FN7IHM'; -- UX Strategy 48:00
+UPDATE videos SET duration = 3180 WHERE youtube_id = 'Z5gqrow7wNs'; -- Usability Testing 53:00
+UPDATE videos SET duration = 2880 WHERE youtube_id = 'gUja_9QLKR4'; -- UX Strategy 48:00
 
 -- Blockchain Development (Subject 14)
 UPDATE videos SET duration = 2100 WHERE youtube_id = 'SSo_EIwHSd4'; -- Blockchain Basics 35:00
@@ -154,15 +154,15 @@ UPDATE videos SET duration = 2760 WHERE youtube_id = 'M576WGiDBdQ'; -- Smart Con
 UPDATE videos SET duration = 2940 WHERE youtube_id = 'jxLkbJozKbY'; -- Ethereum 49:00
 UPDATE videos SET duration = 2640 WHERE youtube_id = 'u3PtGMRmGA0'; -- Web3.js 44:00
 UPDATE videos SET duration = 3180 WHERE youtube_id = 'coQ5dg8wM2o'; -- DApp Development 53:00
-UPDATE videos SET duration = 2880 WHERE youtube_id = 'YPbgjCoVBoI'; -- NFT Creation 48:00
+UPDATE videos SET duration = 2880 WHERE youtube_id = 'meTpMP0J5E8'; -- NFT Creation 48:00
 
 -- Game Development Unity (Subject 15)
 UPDATE videos SET duration = 2100 WHERE youtube_id = 'pwZpJzpE2lQ'; -- Unity Introduction 35:00
 UPDATE videos SET duration = 1860 WHERE youtube_id = 'IlKaB1etrik'; -- Unity Interface 31:00
 UPDATE videos SET duration = 2340 WHERE youtube_id = 'j48LtUkZRjU'; -- First Game 39:00
-UPDATE videos SET duration = 2520 WHERE youtube_id = 'DInV2QdK_84'; -- Game Physics 42:00
-UPDATE videos SET duration = 2760 WHERE youtube_id = 'tAkKkmvZfIQ'; -- Collision Detection 46:00
+UPDATE videos SET duration = 2520 WHERE youtube_id = 'wB1pcXtEwIs'; -- Game Physics 42:00
+UPDATE videos SET duration = 2760 WHERE youtube_id = 'vFjXKOXdgGo'; -- Collision Detection 46:00
 UPDATE videos SET duration = 2940 WHERE youtube_id = 'f473C43s8nE'; -- Player Movement 49:00
-UPDATE videos SET duration = 2640 WHERE youtube_id = 'Nkb8PVqNvvQ'; -- 3D Modeling 44:00
-UPDATE videos SET duration = 3180 WHERE youtube_id = 'xpmpOtzp4as'; -- Game AI 53:00
+UPDATE videos SET duration = 2640 WHERE youtube_id = 'f3Cn0CGytSQ'; -- 3D Modeling 44:00
+UPDATE videos SET duration = 3180 WHERE youtube_id = 'aR6wt5BlE-'; -- Game AI 53:00
 UPDATE videos SET duration = 2880 WHERE youtube_id = 'HlDGSStxuHI'; -- Game Publishing 48:00
